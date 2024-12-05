@@ -1,92 +1,94 @@
-﻿
+
 CREATE DATABASE QLTV;
-GO
 
+-- Sử dụng cơ sở dữ liệu QLTV
 USE QLTV;
-GO
 
+-- Tạo bảng admin
 CREATE TABLE admin (
-    idAdmin INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
-    username NVARCHAR(20) NOT NULL,
-    adPass NVARCHAR(50) NOT NULL
+    idAdmin INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    username VARCHAR(20) NOT NULL,
+    adPass VARCHAR(50) NOT NULL
 );
-GO
 
+-- Tạo bảng dangNhap
 CREATE TABLE dangNhap (
-    maDangNhap NVARCHAR(10) PRIMARY KEY NOT NULL,
-    nvPass NVARCHAR(20) NOT NULL
+    maDangNhap VARCHAR(10) PRIMARY KEY NOT NULL,
+    nvPass VARCHAR(20) NOT NULL
 );
-GO
 
+-- Tạo bảng Sach
 CREATE TABLE Sach (
-    idBook INT IDENTITY(1,1) NOT NULL,
-    maSach NVARCHAR(10) NOT NULL,
-    tenSach NVARCHAR(150),
-    tacGia NVARCHAR(100),
-    nhaXuatBan NVARCHAR(100),
+    idBook INT AUTO_INCREMENT NOT NULL,
+    maSach VARCHAR(10) NOT NULL,
+    tenSach VARCHAR(150),
+    tacGia VARCHAR(100),
+    nhaXuatBan VARCHAR(100),
     namXuatBan DATE,
-    theLoai NVARCHAR(50),
-    viTriTV NVARCHAR(100),
+    theLoai VARCHAR(50),
+    viTriTV VARCHAR(100),
     soLuong INT NOT NULL,
-    CONSTRAINT PK_Sach PRIMARY KEY (idBook), -- Khóa chính cho cột idBook
-    CONSTRAINT UQ_maSach UNIQUE (maSach) -- Ràng buộc duy nhất cho cột maSach
+    PRIMARY KEY (idBook),
+    UNIQUE (maSach)
 );
-GO
 
+-- Tạo bảng docGia
 CREATE TABLE docGia (
-    idDocGia NVARCHAR(10) PRIMARY KEY NOT NULL,
-    tenDocGia NVARCHAR(100),
-    diaChi NVARCHAR(150),
-    sdtDocGia NVARCHAR(10),
+    idDocGia VARCHAR(10) PRIMARY KEY NOT NULL,
+    tenDocGia VARCHAR(100),
+    diaChi VARCHAR(150),
+    sdtDocGia VARCHAR(10),
     emailDocGia TEXT
 );
-GO
 
+-- Tạo bảng nhanVien
 CREATE TABLE nhanVien (
-    idNhanVien NVARCHAR(10) PRIMARY KEY NOT NULL,
-    tenNhanVien NVARCHAR(100),
-    chucVu NVARCHAR(50),
-    sdtNhanVien NVARCHAR(10),
-    khuVuc NVARCHAR(20),
+    idNhanVien VARCHAR(10) PRIMARY KEY NOT NULL,
+    tenNhanVien VARCHAR(100),
+    chucVu VARCHAR(50),
+    sdtNhanVien VARCHAR(10),
+    khuVuc VARCHAR(20),
     emailNhanVien TEXT,
-    diaChiNhanVien NVARCHAR(150)
+    diaChiNhanVien VARCHAR(150)
 );
-GO
 
+-- Tạo bảng suKien
 CREATE TABLE suKien (
-    idSuKien NVARCHAR(10) PRIMARY KEY NOT NULL,
-    tenSuKien NVARCHAR(100),
-    moTaSuKien NVARCHAR(200),
+    idSuKien VARCHAR(10) PRIMARY KEY NOT NULL,
+    tenSuKien VARCHAR(100),
+    moTaSuKien VARCHAR(200),
     ngayToChuc DATE,
-    gioToChuc NVARCHAR(50),
-    diaDiemToChuc NVARCHAR(200)
+    gioToChuc VARCHAR(50),
+    diaDiemToChuc VARCHAR(200)
 );
-GO
 
+-- Tạo bảng coSoVatChat
 CREATE TABLE coSoVatChat (
-    idThietBi NVARCHAR(10) PRIMARY KEY NOT NULL,
-    tenThietBi NVARCHAR(50),
-    tinhTrangThietBi NVARCHAR(100),
+    idThietBi VARCHAR(10) PRIMARY KEY NOT NULL,
+    tenThietBi VARCHAR(50),
+    tinhTrangThietBi VARCHAR(100),
     ngayMua DATE,
     ngayBaoTri DATE
 );
-GO
 
+-- Tạo bảng Kho
 CREATE TABLE Kho (
-    maSach NVARCHAR(10) NOT NULL,
+    maSach VARCHAR(10) NOT NULL,
     soLuong INT NOT NULL,
-    trangThai NVARCHAR(50),
+    trangThai VARCHAR(50),
+    PRIMARY KEY (maSach)
 );
-GO
 
+-- Tạo ràng buộc khóa ngoại cho bảng Kho
 ALTER TABLE Kho
 ADD CONSTRAINT FK_Kho_Sach FOREIGN KEY (maSach) REFERENCES Sach(maSach);
 
+-- Tạo bảng phieuMuon
 CREATE TABLE phieuMuon (
-    idPhieuMuon NVARCHAR(10) PRIMARY KEY NOT NULL,
-    maSach NVARCHAR(10),
-    idDocGia NVARCHAR(10),
-    idNhanVien NVARCHAR(10),
+    idPhieuMuon VARCHAR(10) PRIMARY KEY NOT NULL,
+    maSach VARCHAR(10),
+    idDocGia VARCHAR(10),
+    idNhanVien VARCHAR(10),
     soLuong INT NOT NULL,
     ngayLapPhieu DATE,
     ngayHenTra DATE,
@@ -94,12 +96,12 @@ CREATE TABLE phieuMuon (
     FOREIGN KEY (idDocGia) REFERENCES docGia(idDocGia),
     FOREIGN KEY (idNhanVien) REFERENCES nhanVien(idNhanVien)
 );
-GO
 
+-- Tạo bảng thongKe
 CREATE TABLE thongKe (
-    idNhanVien NVARCHAR(10) NOT NULL,
-    idDocGia NVARCHAR(10) NOT NULL,
-    idSach NVARCHAR(10) NOT NULL,
+    idNhanVien VARCHAR(10) NOT NULL,
+    idDocGia VARCHAR(10) NOT NULL,
+    idSach VARCHAR(10) NOT NULL,
     ngayThongKe DATE,
     soLanMuon INT,
     soLanTra INT,
@@ -108,14 +110,14 @@ CREATE TABLE thongKe (
     FOREIGN KEY (idSach) REFERENCES Sach(maSach),
     FOREIGN KEY (idDocGia) REFERENCES docGia(idDocGia)
 );
-GO
 
+-- Tạo bảng phieuTra
 CREATE TABLE phieuTra (
-    idPhieuMuon NVARCHAR(10),
-    idNhanVien NVARCHAR(10),
-    tenNhanVien1 NVARCHAR(100),
-    tenDocGia NVARCHAR(100),
-    trangThai NVARCHAR(50),
+    idPhieuMuon VARCHAR(10),
+    idNhanVien VARCHAR(10),
+    tenNhanVien1 VARCHAR(100),
+    tenDocGia VARCHAR(100),
+    trangThai VARCHAR(50),
     ngayTraThuc DATE,
     ngayHenTra DATE,
     phiTreHen FLOAT,
@@ -125,28 +127,28 @@ CREATE TABLE phieuTra (
     FOREIGN KEY (idPhieuMuon) REFERENCES phieuMuon(idPhieuMuon),
     FOREIGN KEY (idNhanVien) REFERENCES nhanVien(idNhanVien)
 );
-GO
 
+-- Tạo bảng Luong
 CREATE TABLE Luong (
-    idNhanVien NVARCHAR(10),
+    idNhanVien VARCHAR(10),
     ngayDiLam DATE,
-    thuong MONEY,
-    luong MONEY,
-    chucVu NVARCHAR(50),
+    thuong DECIMAL(10,2),
+    luong DECIMAL(10,2),
+    chucVu VARCHAR(50),
     PRIMARY KEY (idNhanVien),
     FOREIGN KEY (idNhanVien) REFERENCES nhanVien(idNhanVien)
 );
-GO
 
+-- Tạo bảng chamCong
 CREATE TABLE chamCong (
-    idNhanVien NVARCHAR(10),
-    chucVu NVARCHAR(50),
+    idNhanVien VARCHAR(10),
+    chucVu VARCHAR(50),
     ngayDiLam DATE,
-    tinhTrang NVARCHAR(100),
-    phep BIT,
+    tinhTrang VARCHAR(100),
+    phep BOOLEAN,
     PRIMARY KEY (idNhanVien),
     FOREIGN KEY (idNhanVien) REFERENCES nhanVien(idNhanVien)
 );
-GO
 
- insert into admin (username, adPass) values ('admin','08072003')
+-- Thêm dữ liệu vào bảng admin
+INSERT INTO admin (username, adPass) VALUES ('admin', '08072003');
